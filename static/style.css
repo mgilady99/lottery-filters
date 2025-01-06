@@ -1,32 +1,65 @@
-<<<<<<< HEAD
 /* General Styles */
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f8f9fa;
-=======
-body {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
+    background-color: #f5f5f5;
     padding: 2rem 0;
 }
 
 .container {
-<<<<<<< HEAD
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 /* Title */
 .page-title {
     text-align: center;
-    margin-bottom: 2rem;
     color: #2c3e50;
+    margin-bottom: 2rem;
     font-weight: 700;
 }
 
-/* Filter Progress */
+/* Cards */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Filter Rows */
+.filter-row {
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+}
+
+.filter-content {
+    position: relative;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.filter-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
 .filter-progress {
     display: flex;
     align-items: center;
@@ -35,35 +68,140 @@ body {
 
 .progress-text {
     font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.progress-text:empty::before {
+    content: "Ready";
     color: #6c757d;
 }
 
 .time-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #6c757d;
 }
 
-/* Filter States */
-.filter-row.running .progress-text {
-    color: #0d6efd;
-    animation: pulse 1.5s infinite;
+/* Filter Stats */
+.filter-stats {
+    margin-top: 1rem;
 }
 
-.filter-row.complete .progress-text {
-    color: #198754;
+.filter-stats .alert {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
-.filter-row.error .progress-text {
-    color: #dc3545;
+/* Inputs */
+.filter-inputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-=======
-    max-width: 1200px;
+.input-group-sm {
+    flex: 1;
 }
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+/* Buttons */
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-run {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: white;
+}
+
+.btn-run:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-skip {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-skip:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Results */
+.combinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.combination-card {
+    background: #f8f9fa;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.combination-numbers {
+    font-family: monospace;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.copy-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Copy Tooltip */
+.copy-tooltip {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.copy-tooltip.show {
+    opacity: 1;
+}
+
+/* Status Colors */
+.progress-text:contains("Running") {
+    color: #3498db;
+}
+
+.progress-text:contains("Complete") {
+    color: #2ecc71;
+}
+
+.progress-text:contains("Error") {
+    color: #e74c3c;
+}
+
+.progress-text:contains("Skipped") {
+    color: #95a5a6;
+}
+
 /* Add styles for the status indicator */
 .filter-status {
     font-size: 14px;
@@ -75,12 +213,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-.page-title {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #fff;
-    font-weight: 700;
 }
 
 .card {
@@ -279,6 +411,45 @@ body {
     opacity: 1;
 }
 
+/* Help Icon Styles */
+.filter-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.help-icon {
+    color: #6c757d;
+    font-size: 0.9rem;
+    cursor: help;
+    transition: color 0.2s ease;
+}
+
+.help-icon:hover {
+    color: #3498db;
+}
+
+/* Bootstrap Tooltip Customization */
+.tooltip {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+}
+
+.tooltip-inner {
+    max-width: 300px;
+    padding: 0.75rem;
+    background-color: rgba(52, 73, 94, 0.95);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    line-height: 1.4;
+}
+
+.bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before, 
+.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: rgba(52, 73, 94, 0.95);
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 8px;
@@ -320,5 +491,4 @@ body {
 /* Spinner */
 .spinner-border {
     color: #4CAF50;
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
 }

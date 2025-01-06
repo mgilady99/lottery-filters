@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import itertools
@@ -7,63 +6,11 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-=======
-from flask import Flask, render_template, request, jsonify, send_from_directory
-import itertools
-import numpy as np
-import json
-import os
-import random
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
-
-def generate_combinations(total_numbers, draw_size):
-    numbers = list(range(1, total_numbers + 1))
-    return [list(combo) for combo in itertools.combinations(numbers, draw_size)]
-
-def filter_odd_count(combinations, min_odd=None, max_odd=None):
-    if min_odd is None and max_odd is None:
-        return combinations
-    return [combo for combo in combinations 
-            if (min_odd is None or sum(1 for num in combo if num % 2 != 0) >= min_odd) and
-               (max_odd is None or sum(1 for num in combo if num % 2 != 0) <= max_odd)]
-
-def filter_distance(combinations, min_dist=None, max_dist=None):
-    if min_dist is None and max_dist is None:
-        return combinations
-    return [combo for combo in combinations 
-            if (min_dist is None or (max(combo) - min(combo)) >= min_dist) and
-               (max_dist is None or (max(combo) - min(combo)) <= max_dist)]
-
-def filter_sum(combinations, min_sum=None, max_sum=None):
-    if min_sum is None and max_sum is None:
-        return combinations
-    return [combo for combo in combinations 
-            if (min_sum is None or sum(combo) >= min_sum) and
-               (max_sum is None or sum(combo) <= max_sum)]
-
-def filter_must_include(combinations, numbers):
-    if not numbers:
-        return combinations
-    return [combo for combo in combinations if all(num in combo for num in numbers)]
-
-def filter_must_exclude(combinations, numbers):
-    if not numbers:
-        return combinations
-    return [combo for combo in combinations if not any(num in combo for num in numbers)]
-
-def random_selection(combinations, count):
-    if not count or count >= len(combinations):
-        return combinations
-    return random.sample(combinations, count)
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-<<<<<<< HEAD
 @app.route('/filters', methods=['POST'])
 def apply_filters():
     try:
@@ -136,74 +83,4 @@ def apply_filters():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
-=======
-@app.route('/privacy')
-def privacy():
-    return render_template('privacy.html')
-
-@app.route('/filter', methods=['POST'])
-def filter_numbers():
-    try:
-        data = request.get_json()
-        action = data.get('action')
-        
-        if action == 'initial':
-            draw_size = int(data.get('drawSize', 0))
-            total_numbers = int(data.get('totalNumbers', 0))
-            
-            if draw_size <= 0 or total_numbers <= 0 or draw_size > total_numbers:
-                return jsonify({'error': 'Invalid input parameters'}), 400
-                
-            combinations = generate_combinations(total_numbers, draw_size)
-            return jsonify({
-                'combinations': combinations,
-                'count': len(combinations)
-            })
-        
-        # Handle individual filters
-        combinations = data.get('combinations', [])
-        if not combinations:
-            return jsonify({'error': 'No combinations provided'}), 400
-            
-        value = data.get('value', {})
-        filtered_combinations = combinations
-
-        if action == 'odd':
-            min_odd = int(value.get('min')) if value.get('min') else None
-            max_odd = int(value.get('max')) if value.get('max') else None
-            filtered_combinations = filter_odd_count(combinations, min_odd, max_odd)
-        
-        elif action == 'distance':
-            min_dist = int(value.get('min')) if value.get('min') else None
-            max_dist = int(value.get('max')) if value.get('max') else None
-            filtered_combinations = filter_distance(combinations, min_dist, max_dist)
-        
-        elif action == 'sum':
-            min_sum = int(value.get('min')) if value.get('min') else None
-            max_sum = int(value.get('max')) if value.get('max') else None
-            filtered_combinations = filter_sum(combinations, min_sum, max_sum)
-        
-        elif action == 'include':
-            numbers = [int(x.strip()) for x in value.split(',') if x.strip()] if value else []
-            filtered_combinations = filter_must_include(combinations, numbers)
-        
-        elif action == 'exclude':
-            numbers = [int(x.strip()) for x in value.split(',') if x.strip()] if value else []
-            filtered_combinations = filter_must_exclude(combinations, numbers)
-        
-        elif action == 'random':
-            count = int(value) if value else None
-            filtered_combinations = random_selection(combinations, count)
-
-        return jsonify({
-            'combinations': filtered_combinations,
-            'count': len(filtered_combinations)
-        })
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
     app.run(host='0.0.0.0', port=port)

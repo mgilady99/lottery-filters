@@ -14,242 +14,241 @@
     <div class="container">
         <h1 class="page-title animate__animated animate__fadeIn">Smart Lottery Filter</h1>
         
-<<<<<<< HEAD
-=======
-      <div class="container">
-    <h1 class="page-title animate__animated animate__fadeIn">Smart Lottery Filter</h1>
-    
-    <!-- Main Filter Card -->
-    <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-        <h2 class="section-title">Filter Settings</h2>
-        <form id="filterForm">
-            <!-- Filter sections here -->
-<div class="container">
-    <h1 class="page-title">Lottery Filter</h1>
-    
-    <!-- Main Filter Card -->
-    <div class="card">
-        <h2 class="section-title">Filter Settings</h2>
-        ...
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="filteredCount">0</h4>
-                    <p>Filtered Results</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="avgSum">0</h4>
-                    <p>Average Sum</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <h4 id="oddEvenRatio">0:0</h4>
-                    <p>Odd/Even Ratio</p>
-                </div>
-            </div>
-        </div>
-
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
         <!-- Main Filter Card -->
         <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
             <h2 class="section-title">Filter Settings</h2>
             <form id="filterForm">
                 <!-- Base Settings -->
                 <div class="filter-row">
-<<<<<<< HEAD
                     <div class="filter-content">
                         <div class="filter-header">
-                            <h3 class="filter-title">Base Settings</h3>
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Base Settings</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Configure the total numbers in the lottery pool and how many numbers are drawn. For example, in a 6/49 lottery, set Total Numbers to 49 and Draw Size to 6.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
                             <div class="filter-progress">
                                 <span class="progress-text">Ready</span>
                                 <span class="time-text"></span>
                             </div>
                         </div>
-                        <!-- Rest of your existing filter content -->
-                    </div>
-                </div>
-                <!-- Other filters... -->
-            </form>
-        </div>
-    </div>
-</body>
-</html>
-=======
-                    <div class="filter-header">
-                        <h3 class="filter-title">Base Settings</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2">
-                            <div class="input-label">Total Numbers</div>
-                            <input type="number" class="form-control form-control-sm" id="totalNumbers" value="37" min="1">
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2">
+                                <label for="totalNumbers" class="form-label">Total Numbers</label>
+                                <input type="number" class="form-control" id="totalNumbers" value="37">
+                            </div>
+                            <div class="input-group-sm me-2">
+                                <label for="drawSize" class="form-label">Draw Size</label>
+                                <input type="number" class="form-control" id="drawSize" value="6">
+                            </div>
                         </div>
-                        <div class="input-group-sm me-2">
-                            <div class="input-label">Draw Size</div>
-                            <input type="number" class="form-control form-control-sm" id="drawSize" value="6" min="1">
-                        </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-run" data-filter="base">Calculate</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-initial">
-                            Total: <span>0</span>
-                        </div>
-                    </div>
-                    <div id="baseProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="base">Calculate</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Odd Numbers Filter -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Odd Numbers</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="oddMin" placeholder="Min">
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Odd Numbers</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Filter combinations based on the number of odd numbers they contain. Set minimum and maximum odd numbers to control the balance between odd and even numbers.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
                         </div>
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="oddMax" placeholder="Max">
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2">
+                                <label for="oddMin" class="form-label">Minimum Odd Numbers</label>
+                                <input type="number" class="form-control" id="oddMin">
+                            </div>
+                            <div class="input-group-sm me-2">
+                                <label for="oddMax" class="form-label">Maximum Odd Numbers</label>
+                                <input type="number" class="form-control" id="oddMax">
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-skip" data-filter="odd">Skip</button>
-                        <button type="button" class="btn btn-sm btn-run" data-filter="odd">Run</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-odd">
-                            Remaining: <span>-</span>
-                        </div>
-                    </div>
-                    <div id="oddProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="odd">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Distance Filter -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Distance</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="distanceMin" placeholder="Min">
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Distance</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Filter combinations based on the distance between consecutive numbers. The distance is calculated as the difference between each pair of adjacent numbers in sorted order.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
                         </div>
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="distanceMax" placeholder="Max">
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2">
+                                <label for="distanceMin" class="form-label">Minimum Distance</label>
+                                <input type="number" class="form-control" id="distanceMin">
+                            </div>
+                            <div class="input-group-sm me-2">
+                                <label for="distanceMax" class="form-label">Maximum Distance</label>
+                                <input type="number" class="form-control" id="distanceMax">
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-skip" data-filter="distance">Skip</button>
-                        <button type="button" class="btn btn-sm btn-run" data-filter="distance">Run</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-distance">
-                            Remaining: <span>-</span>
-                        </div>
-                    </div>
-                    <div id="distanceProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="distance">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Sum Filter -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Sum</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="sumMin" placeholder="Min">
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Sum</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Filter combinations based on the sum of all numbers in the combination. Use this to ensure your combinations have a total sum within your desired range.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
                         </div>
-                        <div class="input-group-sm me-2">
-                            <input type="number" class="form-control form-control-sm" id="sumMax" placeholder="Max">
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2">
+                                <label for="sumMin" class="form-label">Minimum Sum</label>
+                                <input type="number" class="form-control" id="sumMin">
+                            </div>
+                            <div class="input-group-sm me-2">
+                                <label for="sumMax" class="form-label">Maximum Sum</label>
+                                <input type="number" class="form-control" id="sumMax">
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-skip" data-filter="sum">Skip</button>
-                        <button type="button" class="btn btn-sm btn-run" data-filter="sum">Run</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-sum">
-                            Remaining: <span>-</span>
-                        </div>
-                    </div>
-                    <div id="sumProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="sum">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Must Include Filter -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Must Include</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2" style="width: 200px;">
-                            <input type="text" class="form-control form-control-sm" id="mustInclude" placeholder="e.g., 1,2,3">
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Must Include</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Specify numbers that must be included in all combinations. Enter numbers separated by commas (e.g., 1,2,3). This is useful if you have 'lucky' numbers or want to ensure specific numbers appear.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-skip" data-filter="include">Skip</button>
-                        <button type="button" class="btn btn-sm btn-run" data-filter="include">Run</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-include">
-                            Remaining: <span>-</span>
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2" style="width: 200px;">
+                                <label for="mustInclude" class="form-label">Numbers to Include</label>
+                                <input type="text" class="form-control" id="mustInclude" placeholder="e.g., 1,2,3">
+                            </div>
                         </div>
-                    </div>
-                    <div id="includeProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="include">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Must Exclude Filter -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Must Exclude</h3>
-                    </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2" style="width: 200px;">
-                            <input type="text" class="form-control form-control-sm" id="mustExclude" placeholder="e.g., 4,5,6">
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Must Exclude</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Specify numbers that must not appear in any combinations. Enter numbers separated by commas (e.g., 35,36,37). Use this to exclude numbers you believe are unlikely to be drawn.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button type="button" class="btn btn-sm btn-skip" data-filter="exclude">Skip</button>
-                        <button type="button" class="btn btn-sm btn-run" data-filter="exclude">Run</button>
-                    </div>
-                    <div class="filter-stats">
-                        <div class="stats-pill" id="stat-exclude">
-                            Remaining: <span>-</span>
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2" style="width: 200px;">
+                                <label for="mustExclude" class="form-label">Numbers to Exclude</label>
+                                <input type="text" class="form-control" id="mustExclude" placeholder="e.g., 35,36,37">
+                            </div>
                         </div>
-                    </div>
-                    <div id="excludeProgress" class="filter-progress">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="exclude">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Random Selection -->
                 <div class="filter-row">
-                    <div class="filter-header">
-                        <h3 class="filter-title">Random Selection</h3>
+                    <div class="filter-content">
+                        <div class="filter-header">
+                            <div class="filter-title-wrapper">
+                                <h3 class="filter-title">Random Selection</h3>
+                                <span class="help-icon" data-bs-toggle="tooltip" data-bs-placement="right" 
+                                    title="Randomly select a specified number of combinations from the filtered results. This is useful when you want to play multiple combinations that meet all your filter criteria.">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </div>
+                            <div class="filter-progress">
+                                <span class="progress-text">Ready</span>
+                                <span class="time-text"></span>
+                            </div>
+                        </div>
+                        <div class="filter-inputs">
+                            <div class="input-group-sm me-2" style="width: 200px;">
+                                <label for="randomCount" class="form-label">Number of Combinations</label>
+                                <input type="number" class="form-control" id="randomCount" value="10">
+                            </div>
+                        </div>
+                        <div class="filter-actions">
+                            <button type="button" class="btn btn-primary btn-run" data-filter="random">Apply</button>
+                            <button type="button" class="btn btn-secondary btn-skip">Skip</button>
+                        </div>
                     </div>
-                    <div class="filter-inputs">
-                        <div class="input-group-sm me-2" style="width: 200px;">
-                            <input type="number" class="form-control form-control-sm" id="randomCount
->>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+            <h2 class="section-title">Results</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <div class="copy-tooltip" id="copyTooltip">Copied to clipboard!</div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
