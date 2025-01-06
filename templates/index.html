@@ -14,12 +14,51 @@
     <div class="container">
         <h1 class="page-title animate__animated animate__fadeIn">Smart Lottery Filter</h1>
         
+<<<<<<< HEAD
+=======
+      <div class="container">
+    <h1 class="page-title animate__animated animate__fadeIn">Smart Lottery Filter</h1>
+    
+    <!-- Main Filter Card -->
+    <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+        <h2 class="section-title">Filter Settings</h2>
+        <form id="filterForm">
+            <!-- Filter sections here -->
+<div class="container">
+    <h1 class="page-title">Lottery Filter</h1>
+    
+    <!-- Main Filter Card -->
+    <div class="card">
+        <h2 class="section-title">Filter Settings</h2>
+        ...
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h4 id="filteredCount">0</h4>
+                    <p>Filtered Results</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h4 id="avgSum">0</h4>
+                    <p>Average Sum</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h4 id="oddEvenRatio">0:0</h4>
+                    <p>Odd/Even Ratio</p>
+                </div>
+            </div>
+        </div>
+
+>>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
         <!-- Main Filter Card -->
         <div class="card animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
             <h2 class="section-title">Filter Settings</h2>
             <form id="filterForm">
                 <!-- Base Settings -->
                 <div class="filter-row">
+<<<<<<< HEAD
                     <div class="filter-content">
                         <div class="filter-header">
                             <h3 class="filter-title">Base Settings</h3>
@@ -37,3 +76,180 @@
     </div>
 </body>
 </html>
+=======
+                    <div class="filter-header">
+                        <h3 class="filter-title">Base Settings</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2">
+                            <div class="input-label">Total Numbers</div>
+                            <input type="number" class="form-control form-control-sm" id="totalNumbers" value="37" min="1">
+                        </div>
+                        <div class="input-group-sm me-2">
+                            <div class="input-label">Draw Size</div>
+                            <input type="number" class="form-control form-control-sm" id="drawSize" value="6" min="1">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-run" data-filter="base">Calculate</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-initial">
+                            Total: <span>0</span>
+                        </div>
+                    </div>
+                    <div id="baseProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Odd Numbers Filter -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Odd Numbers</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="oddMin" placeholder="Min">
+                        </div>
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="oddMax" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-skip" data-filter="odd">Skip</button>
+                        <button type="button" class="btn btn-sm btn-run" data-filter="odd">Run</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-odd">
+                            Remaining: <span>-</span>
+                        </div>
+                    </div>
+                    <div id="oddProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distance Filter -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Distance</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="distanceMin" placeholder="Min">
+                        </div>
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="distanceMax" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-skip" data-filter="distance">Skip</button>
+                        <button type="button" class="btn btn-sm btn-run" data-filter="distance">Run</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-distance">
+                            Remaining: <span>-</span>
+                        </div>
+                    </div>
+                    <div id="distanceProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sum Filter -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Sum</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="sumMin" placeholder="Min">
+                        </div>
+                        <div class="input-group-sm me-2">
+                            <input type="number" class="form-control form-control-sm" id="sumMax" placeholder="Max">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-skip" data-filter="sum">Skip</button>
+                        <button type="button" class="btn btn-sm btn-run" data-filter="sum">Run</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-sum">
+                            Remaining: <span>-</span>
+                        </div>
+                    </div>
+                    <div id="sumProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Must Include Filter -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Must Include</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2" style="width: 200px;">
+                            <input type="text" class="form-control form-control-sm" id="mustInclude" placeholder="e.g., 1,2,3">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-skip" data-filter="include">Skip</button>
+                        <button type="button" class="btn btn-sm btn-run" data-filter="include">Run</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-include">
+                            Remaining: <span>-</span>
+                        </div>
+                    </div>
+                    <div id="includeProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Must Exclude Filter -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Must Exclude</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2" style="width: 200px;">
+                            <input type="text" class="form-control form-control-sm" id="mustExclude" placeholder="e.g., 4,5,6">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-sm btn-skip" data-filter="exclude">Skip</button>
+                        <button type="button" class="btn btn-sm btn-run" data-filter="exclude">Run</button>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stats-pill" id="stat-exclude">
+                            Remaining: <span>-</span>
+                        </div>
+                    </div>
+                    <div id="excludeProgress" class="filter-progress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Random Selection -->
+                <div class="filter-row">
+                    <div class="filter-header">
+                        <h3 class="filter-title">Random Selection</h3>
+                    </div>
+                    <div class="filter-inputs">
+                        <div class="input-group-sm me-2" style="width: 200px;">
+                            <input type="number" class="form-control form-control-sm" id="randomCount
+>>>>>>> fb1564456748f3c28f316fd970f3762227d553d9
