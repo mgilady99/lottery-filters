@@ -16,7 +16,7 @@ async function applyFilter(filterData) {
     timeText.text('');
 
     try {
-        const response = await fetch('https://lottery-filters.onrender.com/filters', {
+        const response = await fetch('https://lottery-filters-1.onrender.com/filters', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
