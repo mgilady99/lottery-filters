@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://lottery-filters.onrender.com/sitemap.xml
-
-# Allow all robots complete access
-Disallow:
