@@ -1,8 +1,7 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, request, jsonify
 import math
 import random
-import os
-import json
+from itertools import combinations
 
 app = Flask(__name__)
 
@@ -18,8 +17,25 @@ def get_saved_games():
     return [f.replace('.json', '') for f in files if f.endswith('.json')]
 
 def calculate_combinations(n, r):
-    """Calculate total number of combinations."""
+    """Calculate the total number of possible combinations."""
     return math.comb(n, r)
+
+def has_consecutive_numbers(numbers, min_consecutive=3):
+    """Check if a set has consecutive numbers."""
+    sorted_numbers = sorted(numbers)
+    consecutive_count = 1
+    for i in range(1, len(sorted_numbers)):
+        if sorted_numbers[i] == sorted_numbers[i-1] + 1:
+            consecutive_count += 1
+            if consecutive_count >= min_consecutive:
+                return True
+        else:
+            consecutive_count = 1
+    return False
+
+def count_even_numbers(numbers):
+    """Count the number of even numbers in a set."""
+    return sum(1 for num in numbers if num % 2 == 0)
 
 def generate_combinations(n, r, start_idx, end_idx):
     """Generate combinations for a specific page."""
@@ -69,67 +85,34 @@ def generate_combinations(n, r, start_idx, end_idx):
         'total_pages': math.ceil(total / 1000)
     }
 
-def has_consecutive_numbers(numbers):
-    """Check if numbers contain consecutive values."""
-    sorted_nums = sorted(numbers)
-    for i in range(len(sorted_nums) - 1):
-        if sorted_nums[i + 1] - sorted_nums[i] == 1:
-            return True
-    return False
-
-def has_three_consecutive_numbers(numbers):
-    """Check if numbers contain 3 or more consecutive values."""
-    sorted_nums = sorted(numbers)
-    consecutive_count = 1
-    for i in range(len(sorted_nums) - 1):
-        if sorted_nums[i + 1] - sorted_nums[i] == 1:
-            consecutive_count += 1
-            if consecutive_count >= 3:
-                return True
-        else:
-            consecutive_count = 1
-    return False
-
-def count_even_numbers(numbers):
-    """Count even numbers in the set."""
-    return sum(1 for n in numbers if n % 2 == 0)
-
-def generate_random_sets(n, r, num_sets, filter_three_even=False, filter_three_consecutive=False):
-    """Generate random sets of combinations with statistical filters."""
-    if num_sets <= 0:
-        return []
-    
-    random_sets = []
-    numbers = list(range(1, n + 1))
+def generate_random_set(total_numbers, numbers_to_pick, filter_three_even=False, filter_three_consecutive=False):
+    """Generate a random set of numbers with optional filters."""
+    max_attempts = 1000  # Prevent infinite loops
     attempts = 0
-    max_attempts = num_sets * 100  # Prevent infinite loop
     
-    while len(random_sets) < num_sets and attempts < max_attempts:
-        combo = sorted(random.sample(numbers, r))
-        even_count = count_even_numbers(combo)
-        has_consecutive = has_consecutive_numbers(combo)
-        has_three_consecutive = has_three_consecutive_numbers(combo)
+    while attempts < max_attempts:
+        numbers = sorted(random.sample(range(1, total_numbers + 1), numbers_to_pick))
+        even_count = count_even_numbers(numbers)
+        has_three_consecutive = has_consecutive_numbers(numbers, 3)
         
-        # Apply filters based on user preferences
+        # Check if the set meets the filter criteria
         if filter_three_even and even_count != 3:
             attempts += 1
             continue
-            
+        
         if filter_three_consecutive and has_three_consecutive:
             attempts += 1
             continue
         
-        random_sets.append({
-            'numbers': combo,
-            'sum': sum(combo),
+        return {
+            'numbers': numbers,
+            'sum': sum(numbers),
             'even_count': even_count,
-            'has_consecutive': has_consecutive,
+            'has_consecutive': has_consecutive_numbers(numbers, 2),
             'has_three_consecutive': has_three_consecutive
-        })
-        
-        attempts += 1
+        }
     
-    return random_sets
+    return None  # Return None if no valid set found after max attempts
 
 @app.route('/')
 def home():
@@ -139,7 +122,7 @@ def home():
 @app.route('/combinations', methods=['POST'])
 def get_combinations():
     data = request.get_json()
-    total_numbers = int(data.get('totalNumbers', 49))  # Default to 49
+    total_numbers = int(data.get('totalNumbers', 37))  # Default to 37
     numbers_to_pick = int(data.get('numbersToPick', 6))  # Default to 6
     page = int(data.get('page', 1))
     
@@ -162,78 +145,57 @@ def get_combinations():
         app.logger.error(f"Error generating combinations: {str(e)}")
         return jsonify({'error': 'Error generating combinations'}), 500
 
-def calculate_combination_stats(n, r):
-    """Calculate statistics for combinations without generating all of them."""
-    total = calculate_combinations(n, r)
-    
-    if total > 1000000:
-        # For large sets, estimate stats using sampling
-        sample_size = 1000
-        samples = []
-        numbers = list(range(1, n + 1))
-        
-        for _ in range(sample_size):
-            combo = sorted(random.sample(numbers, r))
-            samples.append(sum(combo))
-        
-        avg_sum = sum(samples) / len(samples)
-        min_sum = min(samples)
-        max_sum = max(samples)
-    else:
-        # For smaller sets, calculate exact stats
-        from itertools import combinations
-        all_numbers = range(1, n + 1)
-        all_combinations = combinations(all_numbers, r)
-        sums = [sum(combo) for combo in all_combinations]
-        avg_sum = sum(sums) / len(sums)
-        min_sum = min(sums)
-        max_sum = max(sums)
-    
-    return {
-        'total_combinations': total,
-        'avg_sum': avg_sum,
-        'min_sum': min_sum,
-        'max_sum': max_sum
-    }
-
-@app.route('/stats', methods=['POST'])
-def get_stats():
-    data = request.get_json()
-    total_numbers = int(data.get('totalNumbers', 37))
-    numbers_to_pick = int(data.get('numbersToPick', 6))
-    
-    stats = calculate_combination_stats(total_numbers, numbers_to_pick)
-    return jsonify(stats)
-
 @app.route('/random-sets', methods=['POST'])
 def get_random_sets():
     data = request.get_json()
-    total_numbers = int(data.get('totalNumbers', 49))  # Default to 49
+    total_numbers = int(data.get('totalNumbers', 37))  # Default to 37
     numbers_to_pick = int(data.get('numbersToPick', 6))  # Default to 6
     num_sets = int(data.get('numSets', 1))
     filter_three_even = data.get('filterThreeEven', False)
     filter_three_consecutive = data.get('filterThreeConsecutive', False)
     
-    if num_sets > 1000:  # Limit maximum number of random sets
-        return jsonify({'error': 'Maximum 1000 random sets allowed'})
+    if total_numbers < numbers_to_pick:
+        return jsonify({'error': 'Total numbers must be greater than numbers to pick'})
     
-    random_sets = generate_random_sets(
-        total_numbers, 
-        numbers_to_pick, 
-        num_sets,
-        filter_three_even,
-        filter_three_consecutive
-    )
+    if num_sets < 1 or num_sets > 1000:
+        return jsonify({'error': 'Number of sets must be between 1 and 1000'})
     
-    # Calculate statistics for the random sets
+    random_sets = []
+    failed_generations = 0
+    
+    # Generate random sets
+    while len(random_sets) < num_sets and failed_generations < num_sets * 2:
+        random_set = generate_random_set(
+            total_numbers, 
+            numbers_to_pick,
+            filter_three_even,
+            filter_three_consecutive
+        )
+        
+        if random_set:
+            random_sets.append(random_set)
+        else:
+            failed_generations += 1
+    
+    if len(random_sets) < num_sets:
+        return jsonify({
+            'error': 'Could not generate enough valid sets with the given filters. Try relaxing the constraints.'
+        })
+    
+    # Calculate statistics
+    sums = [s['sum'] for s in random_sets]
+    even_counts = [s['even_count'] for s in random_sets]
+    consecutive_counts = sum(1 for s in random_sets if s['has_consecutive'])
+    three_consecutive_counts = sum(1 for s in random_sets if s['has_three_consecutive'])
+    
     stats = {
         'total_sets': len(random_sets),
-        'avg_sum': sum(s['sum'] for s in random_sets) / len(random_sets) if random_sets else 0,
-        'min_sum': min((s['sum'] for s in random_sets), default=0),
-        'max_sum': max((s['sum'] for s in random_sets), default=0),
-        'consecutive_count': sum(1 for s in random_sets if s['has_consecutive']),
-        'three_consecutive_count': sum(1 for s in random_sets if s['has_three_consecutive']),
-        'avg_even_count': sum(s['even_count'] for s in random_sets) / len(random_sets) if random_sets else 0
+        'avg_sum': sum(sums) / len(sums),
+        'min_sum': min(sums),
+        'max_sum': max(sums),
+        'consecutive_count': consecutive_counts,
+        'three_consecutive_count': three_consecutive_counts,
+        'avg_even_count': sum(even_counts) / len(even_counts)
     }
     
     return jsonify({
@@ -266,4 +228,4 @@ def load_game(game_name):
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(port=8080, debug=True)
+    app.run(debug=True, port=8080)
