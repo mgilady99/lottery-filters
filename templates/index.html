@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9WMYL5KKJK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-9WMYL5KKJK');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Clever Lottery Odds Filter - Generate smart lottery combinations using statistical filters. Improve your lottery strategy with our advanced number filtering tool.">
@@ -10,12 +19,15 @@
     <meta property="og:description" content="Generate smarter lottery combinations using statistical filters and proven strategies. Improve your lottery odds with our advanced filtering tool.">
     <meta property="og:type" content="website">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://your-domain.com/lottery-filter">
+    <link rel="canonical" href="https://lottery-filters.onrender.com/">
     
     <title>Clever Lottery Odds Filter - Smart Lottery Number Generator</title>
     
-    <!-- AdSense verification meta tag - Replace with your AdSense code -->
+    <!-- AdSense verification meta tag -->
     <meta name="google-adsense-account" content="ca-pub-9929169257372776">
+    
+    <!-- AdSense script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9929169257372776" crossorigin="anonymous"></script>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -134,7 +146,6 @@
             right: 20px;
             z-index: 1000;
         }
-        
         .ad-container {
             margin: 20px 0;
             min-height: 90px;
@@ -144,12 +155,10 @@
             text-align: center;
             overflow: hidden;
         }
-        
         .ad-container-sidebar {
             min-height: 600px;
             margin: 0 0 20px 0;
         }
-        
         @media (max-width: 768px) {
             .ad-container-sidebar {
                 min-height: 250px;
@@ -168,84 +177,98 @@
 
         <h1 class="mb-4 text-center">Clever Lottery Odds Filter</h1>
         
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <label for="totalNumbers" class="form-label">
-                    Total Numbers
-                    <i class="fas fa-question-circle text-primary" 
-                       data-bs-toggle="tooltip" 
-                       title="The total range of numbers in your lottery game (e.g., 37 for a game with numbers 1-37)"></i>
-                </label>
-                <input type="number" class="form-control" id="totalNumbers" value="37" min="1">
-            </div>
-            <div class="col-md-4">
-                <label for="numbersToPick" class="form-label">
-                    Numbers to Pick
-                    <i class="fas fa-question-circle text-primary" 
-                       data-bs-toggle="tooltip" 
-                       title="How many numbers you need to pick for your ticket (e.g., 6 for a 6/37 game)"></i>
-                </label>
-                <input type="number" class="form-control" id="numbersToPick" value="6" min="1">
-            </div>
-            <div class="col-md-4">
-                <label for="numSets" class="form-label">
-                    Number of Random Sets
-                    <i class="fas fa-question-circle text-primary" 
-                       data-bs-toggle="tooltip" 
-                       title="How many random combinations you want to generate (max 1000)"></i>
-                </label>
-                <input type="number" class="form-control" id="numSets" value="5" min="1" max="1000">
-            </div>
-        </div>
+        <div class="row">
+            <!-- Main content column -->
+            <div class="col-lg-9">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label for="totalNumbers" class="form-label">
+                            Total Numbers
+                            <i class="fas fa-question-circle text-primary" 
+                               data-bs-toggle="tooltip" 
+                               title="The total range of numbers in your lottery game (e.g., 37 for a game with numbers 1-37)"></i>
+                        </label>
+                        <input type="number" class="form-control" id="totalNumbers" value="37" min="1">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="numbersToPick" class="form-label">
+                            Numbers to Pick
+                            <i class="fas fa-question-circle text-primary" 
+                               data-bs-toggle="tooltip" 
+                               title="How many numbers you need to pick for your ticket (e.g., 6 for a 6/37 game)"></i>
+                        </label>
+                        <input type="number" class="form-control" id="numbersToPick" value="6" min="1">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="numSets" class="form-label">
+                            Number of Random Sets
+                            <i class="fas fa-question-circle text-primary" 
+                               data-bs-toggle="tooltip" 
+                               title="How many random combinations you want to generate (max 1000)"></i>
+                        </label>
+                        <input type="number" class="form-control" id="numSets" value="5" min="1" max="1000">
+                    </div>
+                </div>
 
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="filterThreeEven">
-                    <label class="form-check-label" for="filterThreeEven">
-                        Filter for exactly 3 even numbers
-                        <i class="fas fa-question-circle text-primary" 
-                           data-bs-toggle="tooltip" 
-                           title="Only show combinations with exactly 3 even numbers, which some players believe provides better odds"></i>
-                    </label>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filterThreeEven">
+                            <label class="form-check-label" for="filterThreeEven">
+                                Filter for exactly 3 even numbers
+                                <i class="fas fa-question-circle text-primary" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Only show combinations with exactly 3 even numbers, which some players believe provides better odds"></i>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="filterThreeConsecutive">
+                            <label class="form-check-label" for="filterThreeConsecutive">
+                                Filter out sets with 3+ consecutive numbers
+                                <i class="fas fa-question-circle text-primary" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Remove combinations that have 3 or more consecutive numbers, as these are statistically less common in winning combinations"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="card p-3 bg-light">
+                        <p class="mb-0">
+                            <i class="fas fa-info-circle text-primary me-2"></i>
+                            This tool helps you generate and filter lottery number combinations. Use the options above to customize your combinations based on various strategies. Click the copy button next to any combination to easily copy it to your clipboard.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="generateCombinations()">
+                            <i class="fas fa-random me-2"></i>Generate Combinations
+                        </button>
+                        <button class="btn btn-success" onclick="generateRandomSets()">
+                            <i class="fas fa-dice me-2"></i>Generate Random Sets
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results section -->
+                <div id="stats" class="stats d-none"></div>
+                <div id="results" class="results-container"></div>
+                <div id="pagination" class="d-flex justify-content-center"></div>
+            </div>
+            
+            <!-- Sidebar for ads -->
+            <div class="col-lg-3">
+                <div class="ad-container ad-container-sidebar">
+                    <!-- AdSense sidebar ad unit will go here -->
+                    <div id="sidebar-ad"></div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="filterThreeConsecutive">
-                    <label class="form-check-label" for="filterThreeConsecutive">
-                        Filter out sets with 3+ consecutive numbers
-                        <i class="fas fa-question-circle text-primary" 
-                           data-bs-toggle="tooltip" 
-                           title="Remove combinations that have 3 or more consecutive numbers, as these are statistically less common in winning combinations"></i>
-                    </label>
-                </div>
-            </div>
         </div>
-
-        <div class="d-flex justify-content-center mb-4">
-            <div class="card p-3 bg-light">
-                <p class="mb-0">
-                    <i class="fas fa-info-circle text-primary me-2"></i>
-                    This tool helps you generate and filter lottery number combinations. Use the options above to customize your combinations based on various strategies. Click the copy button next to any combination to easily copy it to your clipboard.
-                </p>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-center">
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="generateCombinations()">
-                    <i class="fas fa-random me-2"></i>Generate Combinations
-                </button>
-                <button class="btn btn-success" onclick="generateRandomSets()">
-                    <i class="fas fa-dice me-2"></i>Generate Random Sets
-                </button>
-            </div>
-        </div>
-
-        <div id="stats" class="stats d-none"></div>
-        <div id="results" class="results-container"></div>
-        <div id="pagination" class="d-flex justify-content-center"></div>
         
         <!-- Bottom Ad Space -->
         <div class="ad-container">
@@ -281,10 +304,6 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- AdSense script - Replace with your AdSense code -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9929169257372776" crossorigin="anonymous"></script>
-    
     <script>
         // Initialize tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
