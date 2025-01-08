@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 import itertools
 import random
 import math
+import os
 
 app = Flask(__name__)
 
@@ -141,4 +142,5 @@ def generate_random():
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)
