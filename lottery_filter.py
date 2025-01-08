@@ -24,19 +24,44 @@ def calculate_combinations(n, r):
 def generate_combinations(n, r, start_idx, end_idx):
     """Generate combinations for a specific page."""
     from itertools import combinations
-    all_numbers = range(1, n + 1)
+    import itertools
+    
     total = calculate_combinations(n, r)
     
-    # Generate all combinations and slice for pagination
-    all_combinations = list(combinations(all_numbers, r))
-    page_combinations = all_combinations[start_idx:end_idx]
-    
-    combinations_data = []
-    for combo in page_combinations:
-        combinations_data.append({
-            'numbers': list(combo),
-            'sum': sum(combo)
-        })
+    if total > 1000000:  # If more than 1 million combinations
+        # Generate only the combinations we need for the current page
+        all_numbers = range(1, n + 1)
+        combinations_data = []
+        
+        # Skip combinations until start_idx
+        combo_iter = itertools.combinations(all_numbers, r)
+        for _ in range(start_idx):
+            next(combo_iter, None)
+        
+        # Take only what we need for this page
+        count = 0
+        while count < (end_idx - start_idx):
+            try:
+                combo = next(combo_iter)
+                combinations_data.append({
+                    'numbers': list(combo),
+                    'sum': sum(combo)
+                })
+                count += 1
+            except StopIteration:
+                break
+    else:
+        # For smaller sets, generate all combinations and slice
+        all_numbers = range(1, n + 1)
+        all_combinations = list(combinations(all_numbers, r))
+        page_combinations = all_combinations[start_idx:end_idx]
+        
+        combinations_data = []
+        for combo in page_combinations:
+            combinations_data.append({
+                'numbers': list(combo),
+                'sum': sum(combo)
+            })
     
     return {
         'combinations': combinations_data,
@@ -114,19 +139,62 @@ def home():
 @app.route('/combinations', methods=['POST'])
 def get_combinations():
     data = request.get_json()
-    total_numbers = int(data.get('totalNumbers', 37))
-    numbers_to_pick = int(data.get('numbersToPick', 6))
+    total_numbers = int(data.get('totalNumbers', 49))  # Default to 49
+    numbers_to_pick = int(data.get('numbersToPick', 6))  # Default to 6
     page = int(data.get('page', 1))
     
     if total_numbers < numbers_to_pick:
         return jsonify({'error': 'Total numbers must be greater than numbers to pick'})
+    
+    total = calculate_combinations(total_numbers, numbers_to_pick)
+    if total > 10000000:  # 10 million limit
+        return jsonify({'error': f'Too many combinations ({total:,}). Please reduce the numbers.'})
     
     # Calculate pagination
     per_page = 1000
     start_idx = (page - 1) * per_page
     end_idx = start_idx + per_page
     
-    return jsonify(generate_combinations(total_numbers, numbers_to_pick, start_idx, end_idx))
+    try:
+        result = generate_combinations(total_numbers, numbers_to_pick, start_idx, end_idx)
+        return jsonify(result)
+    except Exception as e:
+        app.logger.error(f"Error generating combinations: {str(e)}")
+        return jsonify({'error': 'Error generating combinations'}), 500
+
+def calculate_combination_stats(n, r):
+    """Calculate statistics for combinations without generating all of them."""
+    total = calculate_combinations(n, r)
+    
+    if total > 1000000:
+        # For large sets, estimate stats using sampling
+        sample_size = 1000
+        samples = []
+        numbers = list(range(1, n + 1))
+        
+        for _ in range(sample_size):
+            combo = sorted(random.sample(numbers, r))
+            samples.append(sum(combo))
+        
+        avg_sum = sum(samples) / len(samples)
+        min_sum = min(samples)
+        max_sum = max(samples)
+    else:
+        # For smaller sets, calculate exact stats
+        from itertools import combinations
+        all_numbers = range(1, n + 1)
+        all_combinations = combinations(all_numbers, r)
+        sums = [sum(combo) for combo in all_combinations]
+        avg_sum = sum(sums) / len(sums)
+        min_sum = min(sums)
+        max_sum = max(sums)
+    
+    return {
+        'total_combinations': total,
+        'avg_sum': avg_sum,
+        'min_sum': min_sum,
+        'max_sum': max_sum
+    }
 
 @app.route('/stats', methods=['POST'])
 def get_stats():
@@ -140,8 +208,8 @@ def get_stats():
 @app.route('/random-sets', methods=['POST'])
 def get_random_sets():
     data = request.get_json()
-    total_numbers = int(data.get('totalNumbers', 37))
-    numbers_to_pick = int(data.get('numbersToPick', 6))
+    total_numbers = int(data.get('totalNumbers', 49))  # Default to 49
+    numbers_to_pick = int(data.get('numbersToPick', 6))  # Default to 6
     num_sets = int(data.get('numSets', 1))
     filter_three_even = data.get('filterThreeEven', False)
     filter_three_consecutive = data.get('filterThreeConsecutive', False)
