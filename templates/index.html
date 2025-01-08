@@ -5,43 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lottery Filter</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container {
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            max-width: 1000px;
         }
         .btn-group {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            gap: 10px;
+        }
+        .btn {
+            padding: 12px 24px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-primary {
+            background-color: #4361ee;
+            border: none;
+        }
+        .btn-success {
+            background-color: #2ec4b6;
+            border: none;
         }
         .results-container {
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .combination {
             background-color: #f8f9fa;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .combination:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .numbers-group {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .number-ball {
+            width: 40px;
+            height: 40px;
+            background-color: #4361ee;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
         }
         .stats {
             background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+        }
+        .stats h4 {
+            color: #2b2d42;
+            margin-bottom: 15px;
+        }
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2b2d42;
         }
         .pagination {
-            margin-top: 20px;
+            margin-top: 30px;
+        }
+        .page-link {
+            padding: 12px 18px;
+            color: #4361ee;
+        }
+        .page-item.active .page-link {
+            background-color: #4361ee;
+            border-color: #4361ee;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #4361ee;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            color: #2ec4b6;
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Lottery Filter</h1>
+        <h1 class="mb-4 text-center">Lottery Filter</h1>
         
         <div class="row mb-4">
             <div class="col-md-4">
@@ -77,9 +161,15 @@
             </div>
         </div>
 
-        <div class="btn-group">
-            <button class="btn btn-primary" onclick="generateCombinations()">Generate Combinations</button>
-            <button class="btn btn-success ms-2" onclick="generateRandomSets()">Generate Random Sets</button>
+        <div class="d-flex justify-content-center">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="generateCombinations()">
+                    <i class="fas fa-random me-2"></i>Generate Combinations
+                </button>
+                <button class="btn btn-success" onclick="generateRandomSets()">
+                    <i class="fas fa-dice me-2"></i>Generate Random Sets
+                </button>
+            </div>
         </div>
 
         <div id="stats" class="stats d-none"></div>
@@ -87,23 +177,53 @@
         <div id="pagination" class="d-flex justify-content-center"></div>
     </div>
 
+    <div class="toast-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentPage = 1;
+        
+        function showToast(message) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast show';
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="toast-body bg-success text-white rounded">
+                    ${message}
+                </div>
+            `;
+            toastContainer.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function copyNumbers(numbers) {
+            navigator.clipboard.writeText(numbers.join(', ')).then(() => {
+                showToast('Numbers copied to clipboard!');
+            });
+        }
         
         function displayStats(stats) {
             const statsDiv = document.getElementById('stats');
             statsDiv.classList.remove('d-none');
             
             statsDiv.innerHTML = `
-                <h4>Statistics:</h4>
-                <p>Total Sets: ${stats.total_sets}</p>
-                <p>Average Sum: ${stats.avg_sum.toFixed(2)}</p>
-                <p>Min Sum: ${stats.min_sum}</p>
-                <p>Max Sum: ${stats.max_sum}</p>
-                <p>Average Even Numbers: ${stats.avg_even_count.toFixed(2)}</p>
-                <p>Sets with Consecutive Numbers: ${stats.consecutive_count}</p>
-                <p>Sets with 3+ Consecutive Numbers: ${stats.three_consecutive_count}</p>
+                <h4><i class="fas fa-chart-bar me-2"></i>Statistics</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><i class="fas fa-calculator me-2"></i>Total Sets: ${stats.total_sets}</p>
+                        <p><i class="fas fa-plus-minus me-2"></i>Average Sum: ${stats.avg_sum.toFixed(2)}</p>
+                        <p><i class="fas fa-arrow-down me-2"></i>Min Sum: ${stats.min_sum}</p>
+                        <p><i class="fas fa-arrow-up me-2"></i>Max Sum: ${stats.max_sum}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fas fa-dice-two me-2"></i>Average Even Numbers: ${stats.avg_even_count.toFixed(2)}</p>
+                        <p><i class="fas fa-link me-2"></i>Sets with Consecutive Numbers: ${stats.consecutive_count}</p>
+                        <p><i class="fas fa-link me-2"></i>Sets with 3+ Consecutive Numbers: ${stats.three_consecutive_count}</p>
+                    </div>
+                </div>
             `;
         }
 
@@ -116,9 +236,16 @@
                 const div = document.createElement('div');
                 div.className = 'combination';
                 div.innerHTML = `
-                    <strong>Numbers:</strong> ${combo.numbers.join(', ')}
-                    <br>
-                    <strong>Sum:</strong> ${combo.sum}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong><i class="fas fa-hashtag me-2"></i>Numbers:</strong>
+                        <button class="copy-btn" onclick="copyNumbers(${JSON.stringify(combo.numbers)})">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="numbers-group">
+                        ${combo.numbers.map(num => `<div class="number-ball">${num}</div>`).join('')}
+                    </div>
+                    <strong><i class="fas fa-plus me-2"></i>Sum:</strong> ${combo.sum}
                 `;
                 resultsDiv.appendChild(div);
             });
@@ -129,7 +256,9 @@
                 <nav>
                     <ul class="pagination">
                         <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>
+                            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
                         </li>
             `;
 
@@ -143,7 +272,9 @@
 
             paginationHTML += `
                         <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+                            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -161,15 +292,21 @@
                 const div = document.createElement('div');
                 div.className = 'combination';
                 div.innerHTML = `
-                    <strong>Numbers:</strong> ${set.numbers.join(', ')}
-                    <br>
-                    <strong>Sum:</strong> ${set.sum}
-                    <br>
-                    <strong>Even Numbers:</strong> ${set.even_count}
-                    <br>
-                    <strong>Has Consecutive Numbers:</strong> ${set.has_consecutive ? 'Yes' : 'No'}
-                    <br>
-                    <strong>Has 3+ Consecutive Numbers:</strong> ${set.has_three_consecutive ? 'Yes' : 'No'}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong><i class="fas fa-hashtag me-2"></i>Numbers:</strong>
+                        <button class="copy-btn" onclick="copyNumbers(${JSON.stringify(set.numbers)})">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="numbers-group">
+                        ${set.numbers.map(num => `<div class="number-ball">${num}</div>`).join('')}
+                    </div>
+                    <div class="mt-2">
+                        <p><strong><i class="fas fa-plus me-2"></i>Sum:</strong> ${set.sum}</p>
+                        <p><strong><i class="fas fa-dice-two me-2"></i>Even Numbers:</strong> ${set.even_count}</p>
+                        <p><strong><i class="fas fa-link me-2"></i>Has Consecutive Numbers:</strong> ${set.has_consecutive ? 'Yes' : 'No'}</p>
+                        <p><strong><i class="fas fa-link me-2"></i>Has 3+ Consecutive Numbers:</strong> ${set.has_three_consecutive ? 'Yes' : 'No'}</p>
+                    </div>
                 `;
                 resultsDiv.appendChild(div);
             });
