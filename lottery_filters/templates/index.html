@@ -310,47 +310,6 @@
             loadingOverlay.style.display = 'none';
         }
 
-        async function loadCombinations(page = 1) {
-            if (!currentConfig) return;
-            
-            showLoading('Loading combinations...');
-            
-            try {
-                const response = await fetch('/combinations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        totalNumbers: currentConfig.totalNumbers,
-                        numbersToPick: currentConfig.numbersToPick,
-                        page: page
-                    })
-                });
-                const data = await response.json();
-                
-                if (data.error) {
-                    alert(data.error);
-                    return;
-                }
-                
-                currentPage = page;
-                totalPages = data.total_pages;
-                updateDisplay(data);
-                updatePagination();
-            } catch (error) {
-                alert('Error loading combinations');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        function updatePagination() {
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-            prevPageBtn.disabled = currentPage <= 1;
-            nextPageBtn.disabled = currentPage >= totalPages;
-        }
-
         function clearCombinations() {
             if (confirm('Are you sure you want to clear all combinations?')) {
                 combinationsDiv.innerHTML = '';
@@ -380,7 +339,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             clearCombinationsBtn.onclick = clearCombinations;
             clearRandomBtn.onclick = clearRandomSets;
-
+            
             generateBtn.onclick = async () => {
                 const totalNumbers = parseInt(totalNumbersInput.value);
                 const numbersToPick = parseInt(numbersToPickInput.value);
@@ -401,7 +360,7 @@
                 clearCombinationsBtn.disabled = false;  // Enable clear button after combinations are generated
                 exportBtn.disabled = false;
             };
-
+            
             prevPageBtn.onclick = () => {
                 if (currentPage > 1) {
                     loadCombinations(currentPage - 1);
@@ -459,127 +418,168 @@
                     hideLoading();
                 }
             };
-        });
-
-        function updateDisplay(data) {
-            const combinationsDiv = document.getElementById('combinations');
-            combinationsDiv.innerHTML = data.combinations.map((combo, index) => `
-                <div class="combination-item">
-                    <div>
-                        <span>#${(currentPage - 1) * 1000 + index + 1}: ${combo.numbers.map(num => 
-                            `<span class="number-badge ${num % 2 === 0 ? 'even-number' : 'odd-number'}">${num}</span>`
-                        ).join('')}</span>
-                    </div>
-                    <span class="badge bg-light text-dark">Sum: ${combo.sum}</span>
-                </div>
-            `).join('');
-        }
-
-        function updateRandomSets(data) {
-            const randomSetsDiv = document.getElementById('randomSets');
-            const randomStats = document.getElementById('randomStats');
             
-            // Update random sets display with styled numbers
-            randomSetsDiv.innerHTML = data.random_sets.map((set, index) => `
-                <div class="combination-item">
-                    <div>
-                        <span>#${index + 1}: ${set.numbers.map(num => 
-                            `<span class="number-badge ${num % 2 === 0 ? 'even-number' : 'odd-number'}">${num}</span>`
-                        ).join('')}</span>
-                        <div class="small text-muted">
-                            Even numbers: ${set.even_count}, 
-                            Consecutive: ${set.has_consecutive ? 'Yes' : 'No'},
-                            3+ Consecutive: ${set.has_three_consecutive ? 'Yes' : 'No'}
-                        </div>
-                    </div>
-                    <span class="badge bg-light text-dark">Sum: ${set.sum}</span>
-                </div>
-            `).join('');
-            
-            // Update statistics
-            document.getElementById('totalRandomSets').textContent = data.stats.total_sets;
-            document.getElementById('avgRandomSum').textContent = Math.round(data.stats.avg_sum);
-            document.getElementById('minRandomSum').textContent = data.stats.min_sum;
-            document.getElementById('maxRandomSum').textContent = data.stats.max_sum;
-            document.getElementById('consecutiveCount').textContent = 
-                `${data.stats.consecutive_count} (${Math.round(data.stats.consecutive_count / data.stats.total_sets * 100)}%)`;
-            document.getElementById('threeConsecutiveCount').textContent = 
-                `${data.stats.three_consecutive_count} (${Math.round(data.stats.three_consecutive_count / data.stats.total_sets * 100)}%)`;
-            document.getElementById('avgEvenCount').textContent = 
-                Math.round(data.stats.avg_even_count * 10) / 10;
-            
-            randomStats.style.display = 'block';
-        }
-
-        async function exportCombinations() {
-            if (!currentConfig) return;
-            
-            showLoading('Preparing combinations export...');
-            
-            try {
-                const response = await fetch('/combinations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        totalNumbers: currentConfig.totalNumbers,
-                        numbersToPick: currentConfig.numbersToPick,
-                        page: 1
-                    })
-                });
-                const data = await response.json();
+            async function loadCombinations(page = 1) {
+                if (!currentConfig) return;
                 
-                if (data.error) {
-                    alert(data.error);
-                    return;
+                showLoading('Loading combinations...');
+                
+                try {
+                    const response = await fetch('/combinations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            totalNumbers: currentConfig.totalNumbers,
+                            numbersToPick: currentConfig.numbersToPick,
+                            page: page
+                        })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    
+                    currentPage = page;
+                    totalPages = data.total_pages;
+                    updateDisplay(data);
+                    updatePagination();
+                } catch (error) {
+                    alert('Error loading combinations');
+                } finally {
+                    hideLoading();
                 }
-                
-                const csvContent = 'data:text/csv;charset=utf-8,' + 
-                    'Combination Number,Numbers,Sum\n' +
-                    data.combinations.map((combo, index) => 
-                        `${index + 1},"${combo.numbers.join(', ')}",${combo.sum}`
-                    ).join('\n');
-                
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement('a');
-                link.setAttribute('href', encodedUri);
-                link.setAttribute('download', 'combinations.csv');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (error) {
-                alert('Error exporting combinations');
-            } finally {
-                hideLoading();
             }
-        }
 
-        async function exportRandomSets() {
-            if (!currentRandomSets.length) return;
-            
-            showLoading('Preparing random sets export...');
-            
-            try {
-                const csvContent = 'data:text/csv;charset=utf-8,' + 
-                    'Set Number,Numbers,Sum\n' +
-                    currentRandomSets.map((set, index) => 
-                        `${index + 1},"${set.numbers.join(', ')}",${set.sum}`
-                    ).join('\n');
-                
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement('a');
-                link.setAttribute('href', encodedUri);
-                link.setAttribute('download', 'random_sets.csv');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (error) {
-                alert('Error exporting random sets');
-            } finally {
-                hideLoading();
+            function updatePagination() {
+                pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages;
             }
-        }
+
+            function updateDisplay(data) {
+                const combinationsDiv = document.getElementById('combinations');
+                combinationsDiv.innerHTML = data.combinations.map((combo, index) => `
+                    <div class="combination-item">
+                        <div>
+                            <span>#${(currentPage - 1) * 1000 + index + 1}: ${combo.numbers.map(num => 
+                                `<span class="number-badge ${num % 2 === 0 ? 'even-number' : 'odd-number'}">${num}</span>`
+                            ).join('')}</span>
+                        </div>
+                        <span class="badge bg-light text-dark">Sum: ${combo.sum}</span>
+                    </div>
+                `).join('');
+            }
+
+            function updateRandomSets(data) {
+                const randomSetsDiv = document.getElementById('randomSets');
+                const randomStats = document.getElementById('randomStats');
+                
+                // Update random sets display with styled numbers
+                randomSetsDiv.innerHTML = data.random_sets.map((set, index) => `
+                    <div class="combination-item">
+                        <div>
+                            <span>#${index + 1}: ${set.numbers.map(num => 
+                                `<span class="number-badge ${num % 2 === 0 ? 'even-number' : 'odd-number'}">${num}</span>`
+                            ).join('')}</span>
+                            <div class="small text-muted">
+                                Even numbers: ${set.even_count}, 
+                                Consecutive: ${set.has_consecutive ? 'Yes' : 'No'},
+                                3+ Consecutive: ${set.has_three_consecutive ? 'Yes' : 'No'}
+                            </div>
+                        </div>
+                        <span class="badge bg-light text-dark">Sum: ${set.sum}</span>
+                    </div>
+                `).join('');
+                
+                // Update statistics
+                document.getElementById('totalRandomSets').textContent = data.stats.total_sets;
+                document.getElementById('avgRandomSum').textContent = Math.round(data.stats.avg_sum);
+                document.getElementById('minRandomSum').textContent = data.stats.min_sum;
+                document.getElementById('maxRandomSum').textContent = data.stats.max_sum;
+                document.getElementById('consecutiveCount').textContent = 
+                    `${data.stats.consecutive_count} (${Math.round(data.stats.consecutive_count / data.stats.total_sets * 100)}%)`;
+                document.getElementById('threeConsecutiveCount').textContent = 
+                    `${data.stats.three_consecutive_count} (${Math.round(data.stats.three_consecutive_count / data.stats.total_sets * 100)}%)`;
+                document.getElementById('avgEvenCount').textContent = 
+                    Math.round(data.stats.avg_even_count * 10) / 10;
+                
+                randomStats.style.display = 'block';
+            }
+
+            async function exportCombinations() {
+                if (!currentConfig) return;
+                
+                showLoading('Preparing combinations export...');
+                
+                try {
+                    const response = await fetch('/combinations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            totalNumbers: currentConfig.totalNumbers,
+                            numbersToPick: currentConfig.numbersToPick,
+                            page: 1
+                        })
+                    });
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    
+                    const csvContent = 'data:text/csv;charset=utf-8,' + 
+                        'Combination Number,Numbers,Sum\n' +
+                        data.combinations.map((combo, index) => 
+                            `${index + 1},"${combo.numbers.join(', ')}",${combo.sum}`
+                        ).join('\n');
+                    
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement('a');
+                    link.setAttribute('href', encodedUri);
+                    link.setAttribute('download', 'combinations.csv');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (error) {
+                    alert('Error exporting combinations');
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            async function exportRandomSets() {
+                if (!currentRandomSets.length) return;
+                
+                showLoading('Preparing random sets export...');
+                
+                try {
+                    const csvContent = 'data:text/csv;charset=utf-8,' + 
+                        'Set Number,Numbers,Sum\n' +
+                        currentRandomSets.map((set, index) => 
+                            `${index + 1},"${set.numbers.join(', ')}",${set.sum}`
+                        ).join('\n');
+                    
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement('a');
+                    link.setAttribute('href', encodedUri);
+                    link.setAttribute('download', 'random_sets.csv');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (error) {
+                    alert('Error exporting random sets');
+                } finally {
+                    hideLoading();
+                }
+            }
+        });
     </script>
 </body>
 </html>
