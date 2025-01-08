@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clever Lottery Odds Filter</title>
+    <meta name="description" content="Clever Lottery Odds Filter - Generate smart lottery combinations using statistical filters. Improve your lottery strategy with our advanced number filtering tool.">
+    <meta name="keywords" content="lottery filter, lottery numbers, lottery strategy, lottery combinations, lottery odds, lottery generator, lottery tools">
+    <meta name="author" content="Clever Lottery Odds Filter">
+    <meta property="og:title" content="Clever Lottery Odds Filter - Smart Lottery Number Generator">
+    <meta property="og:description" content="Generate smarter lottery combinations using statistical filters and proven strategies. Improve your lottery odds with our advanced filtering tool.">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://your-domain.com/lottery-filter">
+    
+    <title>Clever Lottery Odds Filter - Smart Lottery Number Generator</title>
+    
+    <!-- AdSense verification meta tag - Replace with your AdSense code -->
+    <meta name="google-adsense-account" content="ca-pub-9929169257372776">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -121,10 +134,38 @@
             right: 20px;
             z-index: 1000;
         }
+        
+        .ad-container {
+            margin: 20px 0;
+            min-height: 90px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .ad-container-sidebar {
+            min-height: 600px;
+            margin: 0 0 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .ad-container-sidebar {
+                min-height: 250px;
+                margin: 20px 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Top Ad Space -->
+        <div class="ad-container">
+            <!-- AdSense ad unit will go here -->
+            <div id="top-ad"></div>
+        </div>
+
         <h1 class="mb-4 text-center">Clever Lottery Odds Filter</h1>
         
         <div class="row mb-4">
@@ -205,11 +246,45 @@
         <div id="stats" class="stats d-none"></div>
         <div id="results" class="results-container"></div>
         <div id="pagination" class="d-flex justify-content-center"></div>
+        
+        <!-- Bottom Ad Space -->
+        <div class="ad-container">
+            <!-- AdSense ad unit will go here -->
+            <div id="bottom-ad"></div>
+        </div>
     </div>
 
     <div class="toast-container"></div>
 
+    <!-- Schema.org markup for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Clever Lottery Odds Filter",
+        "description": "A smart lottery number generator that helps users create filtered combinations based on statistical patterns and strategies.",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Generate lottery combinations",
+            "Filter for even/odd number distribution",
+            "Avoid consecutive number patterns",
+            "Statistical analysis of combinations",
+            "Easy number copying feature"
+        ]
+    }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AdSense script - Replace with your AdSense code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9929169257372776" crossorigin="anonymous"></script>
+    
     <script>
         // Initialize tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
